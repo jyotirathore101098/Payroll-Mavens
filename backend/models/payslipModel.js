@@ -28,7 +28,7 @@ const create = async (payrollRunId, filePath) => {
 // ✅ Fetch payslips for a user
 const getByUser = async (userId) => {
   const [rows] = await pool.query(
-    `SELECT p.PayslipID, p.FilePath, p.GeneratedAt, r.MonthYear, r.NetSalary
+    `SELECT p.PayslipID, r.UserID, p.FilePath, p.GeneratedAt, r.MonthYear, r.NetSalary
      FROM Payslips p
      JOIN PayrollRuns r ON p.PayrollRunID = r.PayrollRunID
      WHERE r.UserID = ?

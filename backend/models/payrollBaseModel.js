@@ -26,6 +26,7 @@ const getByUserId = async (userId) => {
   return rows[0];
 };
 
+
 // Update payroll base
 const update = async (userId, data) => {
   const { BasicSalary = 0, HRA = 0, DA = 0, OtherAllowance = 0 } = data;
@@ -37,4 +38,13 @@ const update = async (userId, data) => {
   );
 };
 
-module.exports = { create, getAll, getByUserId, update };
+// Delete payroll base by UserID
+const remove = async (userId) => {
+  const [result] = await db.execute(
+    `DELETE FROM PayrollBase WHERE UserID = ?`,
+    [userId]
+  );
+  return result.affectedRows;
+};
+
+module.exports = { create, getAll, getByUserId, update, remove };

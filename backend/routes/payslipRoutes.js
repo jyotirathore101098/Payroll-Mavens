@@ -15,7 +15,7 @@ router.delete(
 router.post(
   "/generate",
   authenticateJWT,
-  authorizeRoles("Admin", "HR"),
+  // authorizeRoles("Admin", "HR",""),
   payslipController.generate
 );
 

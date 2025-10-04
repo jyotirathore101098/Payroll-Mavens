@@ -36,4 +36,12 @@ router.put(
   PayrollController.update
 );
 
+// Delete payroll base
+router.delete(
+  "/:userId",
+  authenticateJWT,
+  authorizeRoles("Admin", "HR"),
+  PayrollController.remove
+);
+
 module.exports = router;

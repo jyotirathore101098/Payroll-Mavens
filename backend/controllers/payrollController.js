@@ -60,4 +60,21 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = { create, getAll, getByUserId, update };
+
+// Delete payroll base record
+const remove = async (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const deleted = await PayrollBase.remove(userId);
+    if (deleted > 0) {
+      res.json({ message: "Payroll base deleted" });
+    } else {
+      res.status(404).json({ error: "Payroll base not found" });
+    }
+  } catch (err) {
+    console.error("Error deleting payroll base:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+module.exports = { create, getAll, getByUserId, update, remove };
