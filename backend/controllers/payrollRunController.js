@@ -15,15 +15,15 @@ const runPayroll = async (req, res) => {
       return res.status(404).json({ message: "Payroll base not found" });
     }
 
-  // Ensure all components are numbers to prevent string concatenation
+
   const basic = Number(base.BasicSalary) || 0;
   const hra = Number(base.HRA) || 0;
   const da = Number(base.DA) || 0;
   const other = Number(base.OtherAllowance) || 0;
   let grossSalary = basic + hra + da + other;
-    console.log(`[runPayroll] Base salary for UserID ${UserID}:`, grossSalary);
+  console.log(`[runPayroll] Base salary for UserID ${UserID}:`, grossSalary);
 
-    // 2. Calculate leave information
+    // Calculate leave information
     const leaves = await Leave.getByUserIdAndMonth(UserID, MonthYear);
     const lop = leaves
       .filter((l) => l.LeaveType === "LOP")
@@ -38,8 +38,7 @@ const runPayroll = async (req, res) => {
     grossSalary -= lopDeduction;
     console.log(`[runPayroll] Gross salary after LOP:`, grossSalary);
 
-    // 3. Apply salary adjustments
-    // Fetch bonus and deduction directly from DB using aggregation
+    //  Apply salary adjustments
     const db = require('../config/db');
     const [[bonusRow]] = await db.execute(
       `SELECT COALESCE(SUM(Amount),0) AS Bonus FROM SalaryAdjustments WHERE UserID = ? AND MonthYear = ? AND AdjustmentType = 'Bonus'`,
@@ -51,11 +50,11 @@ const runPayroll = async (req, res) => {
     );
     const bonus = Number(bonusRow.Bonus) || 0;
     const deduction = Number(deductionRow.Deduction) || 0;
-  // 4. Calculate Adjusted Gross Salary
+
   const adjustedGross = grossSalary + bonus - deduction;
   console.log(`[runPayroll] Adjusted gross salary after bonus/deduction:`, adjustedGross);
 
-  // 5. Calculate deductions on adjusted gross
+  // Calculate deductions on adjusted gross
 
   const [[pfRule]] = await db.execute(
     `SELECT Value FROM ComplianceRules 
@@ -84,11 +83,11 @@ console.log(pfRate,esiRate,tdsRate);
   const TDS = +Number(adjustedGross * tdsRate).toFixed(2);
   console.log(`[runPayroll] Deductions PF: ${PF}, ESI: ${ESI}, TDS: ${TDS}`);
 
-  // 6. Net salary: adjusted gross - PF - ESI - TDS
+  //  Net salary
   const netSalary = Number(adjustedGross - PF - ESI - TDS);
   console.log(`[runPayroll] Net salary:`, netSalary);
 
-    // 5. Save payroll run
+    //  Save payroll run
     const payrollRunId = await PayrollRun.createPayrollRun({
       UserID,
       MonthYear,
@@ -102,10 +101,10 @@ console.log(pfRate,esiRate,tdsRate);
     });
     console.log(`[runPayroll] Payroll run saved with ID:`, payrollRunId);
 
-    // Build SalaryAdjustment string
-    let adjustmentStr = '';
-    if (bonus) adjustmentStr += `+${bonus}`;
-    if (deduction) adjustmentStr += (adjustmentStr ? ' ' : '') + `-${deduction}`;
+    // Build SalaryAdjustment 
+    let saladjustment = '';
+    if (bonus) saladjustment += `+${bonus}`;
+    if (deduction) saladjustment += (saladjustment ? ' ' : '') + `-${deduction}`;
 
     res.status(201).json({
       message: "Payroll run completed",
@@ -123,7 +122,7 @@ console.log(pfRate,esiRate,tdsRate);
       LeaveTypes: leaveTypes,
       Bonus: bonus,
       Deduction: deduction,
-      SalaryAdjustment: adjustmentStr
+      SalaryAdjustment: saladjustment
     });
   } catch (err) {
     console.error("Error running payroll:", err);

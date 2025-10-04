@@ -1,6 +1,6 @@
 const db = require("../config/db");
 
-// ✅ Create salary adjustment
+//  Create salary adjustment
 const create = async ({ UserID, AdjustmentType, Amount, MonthYear, Remarks }) => {
   const [result] = await db.execute(
     `INSERT INTO SalaryAdjustments (UserID, AdjustmentType, Amount, MonthYear, Remarks)
@@ -10,7 +10,7 @@ const create = async ({ UserID, AdjustmentType, Amount, MonthYear, Remarks }) =>
   return result.insertId;
 };
 
-// ✅ Get all adjustments
+//  Get all adjustments
 const getAll = async () => {
   const [rows] = await db.execute(
     `SELECT sa.*, u.Name
@@ -21,7 +21,7 @@ const getAll = async () => {
   return rows;
 };
 
-// ✅ Get adjustments by UserID
+//  Get adjustments by UserID
 const getByUserId = async (UserID) => {
   const [rows] = await db.execute(
     `SELECT * FROM SalaryAdjustments WHERE UserID = ? ORDER BY CreatedAt DESC`,
@@ -30,7 +30,7 @@ const getByUserId = async (UserID) => {
   return rows;
 };
 
-// ✅ Update adjustment
+//  Update adjustment
 const update = async (AdjustmentID, { AdjustmentType, Amount, MonthYear, Remarks }) => {
   const [result] = await db.execute(
     `UPDATE SalaryAdjustments 
@@ -41,7 +41,7 @@ const update = async (AdjustmentID, { AdjustmentType, Amount, MonthYear, Remarks
   return result.affectedRows;
 };
 
-// ✅ Delete adjustment
+//  Delete adjustment
 const remove = async (AdjustmentID) => {
   const [result] = await db.execute(
     `DELETE FROM SalaryAdjustments WHERE AdjustmentID = ?`,

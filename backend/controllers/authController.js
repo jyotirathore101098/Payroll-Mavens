@@ -6,11 +6,8 @@ const pool = require("../config/db");
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-
-    // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // save user in DB
     const [result] = await pool.query(
       "INSERT INTO Users (Name, Email, PasswordHash, Role, CreatedAt) VALUES (?, ?, ?, ?, NOW())",
       [name, email, hashedPassword, role]
@@ -49,5 +46,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-// 👇 Export properly
 module.exports = { registerUser, loginUser };

@@ -1,4 +1,4 @@
-// ✅ Delete Leave Record
+// Delete Leave Record
 const deleteLeave = async (req, res) => {
   try {
     const { LeaveID } = req.params;
@@ -15,7 +15,7 @@ const deleteLeave = async (req, res) => {
 
 const Leave = require("../models/leaveModel");
 
-// ✅ Create Leave Record
+// Create Leave Record
 const createLeave = async (req, res) => {
   try {
     const { UserID, LeaveType, LeaveDays, MonthYear } = req.body;
@@ -32,7 +32,7 @@ const createLeave = async (req, res) => {
   }
 };
 
-// ✅ Get All Leaves
+//  Get All Leaves
 const getAllLeaves = async (req, res) => {
   try {
     const leaves = await Leave.getAll();
@@ -42,7 +42,7 @@ const getAllLeaves = async (req, res) => {
   }
 };
 
-// ✅ Get Leaves by User
+//  Get Leaves by User
 const getUserLeaves = async (req, res) => {
   try {
     const leaves = await Leave.getByUserId(req.params.userId);
@@ -52,7 +52,7 @@ const getUserLeaves = async (req, res) => {
   }
 };
 
-// ✅ Update Leave Record (HR/Admin corrections)
+//  Update Leave Record (HR/Admin corrections)
 const updateLeave = async (req, res) => {
   try {
     const { LeaveID } = req.params;

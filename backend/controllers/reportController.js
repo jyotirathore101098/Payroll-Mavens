@@ -1,6 +1,5 @@
-// List available reports (for frontend)
 function listReports(req, res) {
-  // This can be static or dynamic. For now, return static list.
+
   res.json([
     {
       id: "compliance",
@@ -41,12 +40,12 @@ async function getPayrollSummary(req, res) {
 }
 
 async function getPayslipReport(req, res) {
-  // Example: fetch payslips for all users (Admin/HR)
+  //  fetch payslips for all users (Admin/HR)
   const PayslipModel = require("../models/payslipModel");
   try {
-    // For demo, fetch all payslips (in real app, filter by user/role)
+    // fetch all payslips 
     const payslips = await PayslipModel.getAll();
-    // Return payslip info with download endpoint
+   
     res.json(payslips.map(slip => ({
       PayslipID: slip.PayslipID,
       UserID: slip.UserID,
@@ -114,7 +113,7 @@ async function getLeaveReport(req, res) {
   try {
     const LeaveModel = require('../models/leaveModel');
     const rows = await LeaveModel.getAll();
-    // Match CSV columns
+
     const leaves = rows.map(r => ({
       LeaveID: r.LeaveID,
       UserID: r.UserID,
@@ -133,13 +132,9 @@ async function getLeaveReport(req, res) {
 async function getSalaryAdjustmentReport(req, res) {
   res.json({ message: "Salary adjustment report endpoint not yet implemented." });
 }
-// controllers/reportController.js
+
 const ReportModel = require("../models/reportModel");
 
-/**
- * GET /api/reports/compliance?month=Sep-2025
- * Returns JSON summary + per-user breakdown
- */
 async function getComplianceReport(req, res) {
   try {
     const month = req.query.month;
@@ -159,10 +154,9 @@ async function getComplianceReport(req, res) {
   }
 }
 
-/**
- * GET /api/reports/compliance/csv?month=Sep-2025
- * Returns CSV download (per-user breakdown)
- */
+
+  // Returns CSV download (per-user breakdown)
+ 
 async function exportComplianceCsv(req, res) {
   try {
     const month = req.query.month;
@@ -183,7 +177,7 @@ async function exportComplianceCsv(req, res) {
     ];
     const csvRows = [header.join(",")];
 
-    // Build CSV lines safely (escape commas & quotes)
+    // Build CSV lines 
     for (const r of rows) {
       const line = [
         r.PayrollRunID,

@@ -115,7 +115,7 @@ const download = async (req, res) => {
         return res.status(200).send(pdfData);
       });
       // Add logo (blue clouds with INTMAVENS inside)
-      const fallbackLogoPath = path.join(__dirname, "../assets/images.jpeg"); // Ensure this path is correct and image exists
+      const fallbackLogoPath = path.join(__dirname, "../assets/images.jpeg"); 
       if (fs.existsSync(fallbackLogoPath)) {
         fallbackDoc.image(fallbackLogoPath, fallbackDoc.page.width / 2 - 50, 30, { width: 100, align: "center" });
         fallbackDoc.moveDown(2);

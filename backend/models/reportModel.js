@@ -1,9 +1,6 @@
 // models/reportModel.js
 const db = require("../config/db");
 
-/**
- * Get totals for PF, ESI, TDS and count for a given MonthYear (e.g., "Sep-2025")
- */
 async function getComplianceTotalsByMonth(monthYear) {
   const [rows] = await db.execute(
     `SELECT 
@@ -19,9 +16,6 @@ async function getComplianceTotalsByMonth(monthYear) {
   return rows[0] || { totalPF: 0, totalESI: 0, totalTDS: 0, totalGross: 0, runCount: 0 };
 }
 
-/**
- * Per-user compliance rows for a month
- */
 async function getComplianceByUser(monthYear) {
   const [rows] = await db.execute(
     `SELECT 
@@ -42,10 +36,6 @@ async function getComplianceByUser(monthYear) {
   return rows;
 }
 
-/**
- * Optionally: range based totals (fromMonthYear,toMonthYear) if needed
- * (You can implement if MonthYear stored as 'YYYY-MM' or as a date; with 'Sep-2025' it's messy)
- */
 
 module.exports = {
   getComplianceTotalsByMonth,
