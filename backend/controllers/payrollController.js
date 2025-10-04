@@ -1,49 +1,4 @@
-// const PayrollBase = require("../models/payrollBaseModel");
 
-// // Create payroll base record
-// const create = async (req, res) => {
-//   try {
-//     const id = await PayrollBase.create(req.body);
-//     res.status(201).json({ message: "Payroll base created", id });
-//   } catch (err) {
-//     console.error("Error creating payroll:", err);
-//     res.status(500).json({ error: "Server error" });
-//   }
-// };
-
-// // Get all payroll base records
-// const getAll = async (req, res) => {
-//   try {
-//     const payrolls = await PayrollBase.getAll();
-//     res.json(payrolls);
-//   } catch (err) {
-//     res.status(500).json({ error: "Server error" });
-//   }
-// };
-
-// // Get payroll base by userId
-// const getByUserId = async (req, res) => {
-//   try {
-//     const payroll = await PayrollBase.getByUserId(req.params.userId);
-//     if (!payroll) return res.status(404).json({ error: "Not found" });
-//     res.json(payroll);
-//   } catch (err) {
-//     res.status(500).json({ error: "Server error" });
-//   }
-// };
-
-// // Update payroll base record
-// const update = async (req, res) => {
-//   try {
-//     await PayrollBase.update(req.params.userId, req.body);
-//     res.json({ message: "Payroll base updated" });
-//   } catch (err) {
-//     res.status(500).json({ error: "Server error" });
-//   }
-// };
-
-// // Export all functions as an object
-// module.exports = { create, getAll, getByUserId, update };
 const PayrollBase = require("../models/payrollBaseModel");
 
 // Create payroll base record
