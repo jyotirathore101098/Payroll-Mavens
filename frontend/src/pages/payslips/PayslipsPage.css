@@ -1,0 +1,277 @@
+/* PayslipsPage.css */
+.payslips-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.payslips-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 32px;
+}
+
+/* Form Styles */
+.payslips-insert-form {
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  gap: 16px;
+  align-items: end;
+  max-width: 700px;
+}
+
+.payslips-insert-form input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.payslips-insert-form input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.payslips-insert-form input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Button Styles */
+.payslips-download-btn {
+  background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+.payslips-download-btn:hover {
+  background: linear-gradient(90deg, #1e40af 0%, #1e3a8a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.payslips-download-btn:active {
+  transform: translateY(0);
+}
+
+.payslips-download-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.payslips-delete-btn {
+  background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 80px;
+}
+
+.payslips-delete-btn:hover {
+  background: linear-gradient(90deg, #b91c1c 0%, #991b1b 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.payslips-delete-btn:active {
+  transform: translateY(0);
+}
+
+/* Table Styles */
+.payslips-table-container {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.payslips-table-wrapper {
+  overflow-x: auto;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.payslips-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  min-width: 800px;
+}
+
+.payslips-table th, 
+.payslips-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.payslips-table th {
+  background: #f3f4f6;
+  color: #2563eb;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.payslips-table td {
+  background: #fff;
+}
+
+.payslips-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Column width distribution */
+.payslips-table th:nth-child(1),
+.payslips-table td:nth-child(1) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.payslips-table th:nth-child(2),
+.payslips-table td:nth-child(2) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.payslips-table th:nth-child(3),
+.payslips-table td:nth-child(3) {
+  width: 20%;
+  min-width: 120px;
+}
+
+.payslips-table th:nth-child(4),
+.payslips-table td:nth-child(4) {
+  width: 20%;
+  min-width: 120px;
+}
+
+.payslips-table th:nth-child(5),
+.payslips-table td:nth-child(5) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.payslips-table th:nth-child(6),
+.payslips-table td:nth-child(6) {
+  width: 15%;
+  min-width: 100px;
+}
+
+/* Action buttons in table */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-buttons .payslips-download-btn,
+.action-buttons .payslips-delete-btn {
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  min-width: 70px;
+}
+
+/* State messages */
+.payslips-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+.payslips-error {
+  text-align: center;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 24px 0;
+}
+
+.payslips-empty {
+  text-align: center;
+  color: #6b7280;
+  padding: 40px 24px;
+  font-style: italic;
+  background: #f9fafb;
+  border-radius: 8px;
+  margin: 24px 0;
+}
+
+/* Currency formatting */
+.currency {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #059669;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .payslips-container {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .payslips-insert-form {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    max-width: 100%;
+  }
+  
+  .payslips-download-btn {
+    width: 100%;
+  }
+  
+  .payslips-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .action-buttons .payslips-download-btn,
+  .action-buttons .payslips-delete-btn {
+    width: 100%;
+  }
+}

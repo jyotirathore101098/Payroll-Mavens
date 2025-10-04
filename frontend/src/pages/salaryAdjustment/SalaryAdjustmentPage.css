@@ -1,0 +1,241 @@
+.salary-adjustment-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.salary-adjustment-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 32px;
+}
+
+/* Form Styles */
+.salary-adjustment-form {
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+
+.salary-adjustment-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #fff;
+  box-sizing: border-box;
+  height: 48px;
+}
+
+.salary-adjustment-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.salary-adjustment-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Specific styling for select dropdown */
+.salary-adjustment-input[type="select"],
+.salary-adjustment-form select.salary-adjustment-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.salary-adjustment-form select.salary-adjustment-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.salary-adjustment-btn {
+  background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 100px;
+  height: 48px;
+  align-self: end;
+}
+
+.salary-adjustment-btn:hover {
+  background: linear-gradient(90deg, #1e40af 0%, #1e3a8a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.salary-adjustment-btn:active {
+  transform: translateY(0);
+}
+
+/* Cancel button variant */
+.salary-adjustment-btn.cancel {
+  background: linear-gradient(90deg, #6b7280 0%, #4b5563 100%);
+}
+
+.salary-adjustment-btn.cancel:hover {
+  background: linear-gradient(90deg, #4b5563 0%, #374151 100%);
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+/* Delete button variant */
+.salary-adjustment-btn.delete {
+  background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.salary-adjustment-btn.delete:hover {
+  background: linear-gradient(90deg, #b91c1c 0%, #991b1b 100%);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* Table Styles */
+.salary-adjustment-table-wrapper {
+  max-height: 450px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+
+.salary-adjustment-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.salary-adjustment-table th, 
+.salary-adjustment-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.salary-adjustment-table th {
+  background: #f3f4f6;
+  color: #2563eb;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.salary-adjustment-table td {
+  background: #fff;
+}
+
+.salary-adjustment-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Column width distribution */
+.salary-adjustment-table th:nth-child(1),
+.salary-adjustment-table td:nth-child(1) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.salary-adjustment-table th:nth-child(2),
+.salary-adjustment-table td:nth-child(2) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.salary-adjustment-table th:nth-child(3),
+.salary-adjustment-table td:nth-child(3) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.salary-adjustment-table th:nth-child(4),
+.salary-adjustment-table td:nth-child(4) {
+  width: 15%;
+  min-width: 120px;
+}
+
+.salary-adjustment-table th:nth-child(5),
+.salary-adjustment-table td:nth-child(5) {
+  width: 20%;
+  min-width: 140px;
+}
+
+.salary-adjustment-table th:nth-child(6),
+.salary-adjustment-table td:nth-child(6) {
+  width: 20%;
+  min-width: 140px;
+}
+
+/* Action buttons in table */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.action-buttons .salary-adjustment-btn {
+  font-size: 0.875rem;
+  padding: 6px 12px;
+  min-width: 60px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .salary-adjustment-container {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .salary-adjustment-form {
+    grid-template-columns: 1fr;
+    padding: 20px;
+    gap: 12px;
+  }
+  
+  .salary-adjustment-btn {
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  .salary-adjustment-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .action-buttons .salary-adjustment-btn {
+    width: 100%;
+  }
+}

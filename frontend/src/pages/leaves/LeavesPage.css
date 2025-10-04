@@ -1,0 +1,243 @@
+/* LeavesPage.css */
+.leaves-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.leaves-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 32px;
+}
+
+/* Form Styles */
+.leaves-form {
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+
+.leaves-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.leaves-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.leaves-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Form buttons container */
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+  margin-top: 8px;
+}
+
+.leaves-btn {
+  background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.leaves-btn:hover {
+  background: linear-gradient(90deg, #1e40af 0%, #1e3a8a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.leaves-btn:active {
+  transform: translateY(0);
+}
+
+/* Cancel button variant */
+.leaves-btn.cancel {
+  background: linear-gradient(90deg, #6b7280 0%, #4b5563 100%);
+}
+
+.leaves-btn.cancel:hover {
+  background: linear-gradient(90deg, #4b5563 0%, #374151 100%);
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+/* Delete button variant */
+.leaves-btn.delete {
+  background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.leaves-btn.delete:hover {
+  background: linear-gradient(90deg, #b91c1c 0%, #991b1b 100%);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* Table Styles */
+.leaves-table-wrapper {
+  max-height: 450px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+
+.leaves-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.leaves-table th, 
+.leaves-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.leaves-table th {
+  background: #f3f4f6;
+  color: #2563eb;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.leaves-table td {
+  background: #fff;
+}
+
+.leaves-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Column width distribution */
+.leaves-table th:nth-child(1),
+.leaves-table td:nth-child(1) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.leaves-table th:nth-child(2),
+.leaves-table td:nth-child(2) {
+  width: 20%;
+  min-width: 120px;
+}
+
+.leaves-table th:nth-child(3),
+.leaves-table td:nth-child(3) {
+  width: 15%;
+  min-width: 100px;
+  text-align: center;
+}
+
+.leaves-table th:nth-child(4),
+.leaves-table td:nth-child(4) {
+  width: 20%;
+  min-width: 120px;
+}
+
+.leaves-table th:nth-child(5),
+.leaves-table td:nth-child(5) {
+  width: 30%;
+  min-width: 160px;
+}
+
+/* Action buttons in table */
+.leaves-action-btns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.leaves-action-btns .leaves-btn {
+  font-size: 0.875rem;
+  padding: 6px 12px;
+  min-width: 60px;
+}
+
+/* Loading state */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  color: #6b7280;
+  padding: 24px;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .leaves-container {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .leaves-form {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+  }
+  
+  .leaves-btn {
+    width: 100%;
+  }
+  
+  .leaves-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .leaves-action-btns {
+    flex-direction: column;
+  }
+  
+  .leaves-action-btns .leaves-btn {
+    width: 100%;
+  }
+}

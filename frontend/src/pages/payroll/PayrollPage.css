@@ -1,0 +1,219 @@
+.payroll-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.payroll-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 32px;
+}
+
+.payroll-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+.payroll-btn {
+  background: linear-gradient(90deg,#2563eb 0%,#1e40af 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.payroll-btn:hover {
+  background: #1e40af;
+}
+
+
+.payroll-table-wrapper {
+  overflow-x: auto;
+}
+
+.payroll-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  table-layout: fixed;
+}
+
+.payroll-table th, .payroll-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.payroll-table th {
+  background: #f3f4f6;
+  color: #2563eb;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* Column width distribution */
+.payroll-table th:nth-child(1),
+.payroll-table td:nth-child(1) {
+  width: 10%;
+  min-width: 80px;
+}
+
+.payroll-table th:nth-child(2),
+.payroll-table td:nth-child(2) {
+  width: 18%;
+  min-width: 120px;
+}
+
+.payroll-table th:nth-child(3),
+.payroll-table td:nth-child(3) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.payroll-table th:nth-child(4),
+.payroll-table td:nth-child(4) {
+  width: 15%;
+  min-width: 100px;
+}
+
+.payroll-table th:nth-child(5),
+.payroll-table td:nth-child(5) {
+  width: 20%;
+  min-width: 140px;
+}
+
+.payroll-table th:nth-child(6),
+.payroll-table td:nth-child(6) {
+  width: 22%;
+  min-width: 160px;
+}
+
+/* Scrollable table body */
+.payroll-table-container {
+  max-height: 450px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+/* Form Styles */
+.payroll-form {
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+
+.payroll-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.payroll-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.payroll-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Form buttons container */
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+  margin-top: 8px;
+
+}
+
+.payroll-btn {
+  background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.payroll-btn:hover {
+  background: linear-gradient(90deg, #1e40af 0%, #1e3a8a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.payroll-btn:active {
+  transform: translateY(0);
+}
+
+/* Cancel button variant */
+.payroll-btn.cancel {
+  background: linear-gradient(90deg, #6b7280 0%, #4b5563 100%);
+}
+
+.payroll-btn.cancel:hover {
+  background: linear-gradient(90deg, #4b5563 0%, #374151 100%);
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+/* Delete button variant */
+.payroll-btn.delete {
+  background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.payroll-btn.delete:hover {
+  background: linear-gradient(90deg, #b91c1c 0%, #991b1b 100%);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* Responsive form layout */
+@media (max-width: 768px) {
+  .payroll-form {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+  }
+  
+  .payroll-btn {
+    width: 100%;
+  }
+}
