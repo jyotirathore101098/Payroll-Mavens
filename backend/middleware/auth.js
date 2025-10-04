@@ -3,13 +3,13 @@ const jwt = require("jsonwebtoken");
 
 // Middleware: Verify JWT token
 function authenticateJWT(req, res, next) {
-  // For local testing, allow bypass with a special header
+
   if (process.env.NODE_ENV === 'development' && req.headers['x-test-bypass'] === 'true') {
     req.user = { userId: 1, role: 'Admin' };
     return next();
   }
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // Format: Bearer <token>
+  const token = authHeader && authHeader.split(" ")[1]; 
 
   if (!token) {
     return res.status(401).json({ error: "No token provided" });
@@ -27,7 +27,7 @@ function authenticateJWT(req, res, next) {
 // Middleware: Role-based access control
 function authorizeRoles(...allowedRoles) {
   return (req, res, next) => {
-    // For local testing, allow bypass
+
     if (process.env.NODE_ENV === 'development' && req.headers['x-test-bypass'] === 'true') {
       return next();
     }
