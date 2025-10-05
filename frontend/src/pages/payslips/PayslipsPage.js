@@ -39,10 +39,12 @@ const PayslipsPage = () => {
     await downloadPayslip(payslipId, userId, monthYear);
   };
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role || "";
   return (
     <div className="payslips-container">
       <h2 className="payslips-title">Payslips</h2>
-      <PayslipsForm onInsert={handleInsert} />
+      {role !== "Employee" && <PayslipsForm onInsert={handleInsert} />}
       {loading ? (
         <div className="payslips-loading">Loading...</div>
       ) : error ? (

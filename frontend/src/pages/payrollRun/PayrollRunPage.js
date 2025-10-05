@@ -100,12 +100,19 @@ const PayrollRunPage = () => {
     }
   };
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role || "";
   return (
     <div className="payrollrun-container">
       <h2 className="payrollrun-title">Payroll Run Records</h2>
-      <PayrollRunForm form={form} loading={loading} previewLoading={previewLoading} onChange={handleChange} onSubmit={handleSubmit} onPreview={handlePreview} />
-      <PayrollRunSearchForm onSearch={handleSearch} loading={searchLoading} />
-      <PayrollRunPreview preview={preview} />
+      {role !== "Employee" && (
+        <>
+          <PayrollRunForm form={form} loading={loading} previewLoading={previewLoading} onChange={handleChange} onSubmit={handleSubmit} onPreview={handlePreview} />
+          <PayrollRunSearchForm onSearch={handleSearch} loading={searchLoading} />
+          <PayrollRunPreview preview={preview} />
+
+        </>
+      )}
       <PayrollRunTable runs={runs} onDelete={handleDelete} />
     </div>
   );
