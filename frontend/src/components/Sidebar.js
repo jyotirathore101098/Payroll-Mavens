@@ -36,13 +36,11 @@ const Sidebar = () => {
         </NavLink>
          )} 
 
-         
         <NavLink to="/leaves" className="sidebar-link">
           <FaCalendarAlt className="sidebar-icon" />
           <span>Leaves</span>
         </NavLink>
          
-
          {role !== "Employee" && (
         <NavLink to="/salaryAdjustment" className="sidebar-link">
           <FaAdjust className="sidebar-icon" />

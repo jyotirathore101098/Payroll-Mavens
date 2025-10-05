@@ -58,6 +58,17 @@ const getUserLeaves = async (req, res) => {
   }
 };
 
+// Get leaves for logged-in employee
+const getOwnLeaves = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const leaves = await Leave.getByUserId(userId);
+    res.json(leaves);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 //  Update Leave Record (HR/Admin corrections)
 const updateLeave = async (req, res) => {
   try {
@@ -80,3 +91,4 @@ const updateLeave = async (req, res) => {
 };
 
 module.exports = { createLeave, getAllLeaves, getUserLeaves, updateLeave, deleteLeave };
+module.exports.getOwnLeaves = getOwnLeaves;

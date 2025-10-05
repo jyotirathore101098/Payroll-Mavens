@@ -2,6 +2,12 @@ const express = require("express");
 const router = express.Router();
 const LeaveController = require("../controllers/leaveController");
 const { authenticateJWT, authorizeRoles } = require("../middleware/auth");
+// Get logged-in employee's own leaves
+router.get(
+  "/my",
+  authenticateJWT,
+  LeaveController.getOwnLeaves
+);
 
 //  Delete leave record (HR/Admin only)
 router.delete(

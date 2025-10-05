@@ -11,28 +11,23 @@ export const useLeaves = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(API_BASE_URL, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setLeaves(res.data);
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user?.role === "Employee") {
+        // Fetch only own leaves for employee
+        const res = await axios.get(`${API_BASE_URL}/my`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setLeaves(res.data);
+      } else {
+        // HR/Admin: fetch all leaves
+        const res = await axios.get(API_BASE_URL, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setLeaves(res.data);
+      }
     } catch (err) {
       console.error("Fetch leaves error:", err);
       alert("Failed to fetch leaves");
-    }
-    setLoading(false);
-  };
-    // Fetch own leaves for employee
-  const fetchOwnLeaves = async (userId) => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get(`${API_BASE_URL}/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setLeaves(res.data);
-    } catch (err) {
-      console.error("Fetch own leaves error:", err);
-      alert("Failed to fetch your leaves");
     }
     setLoading(false);
   };
@@ -66,5 +61,5 @@ export const useLeaves = () => {
     fetchLeaves();
   }, []);
 
-  return { leaves, loading, addLeave, updateLeave, deleteLeave, fetchOwnLeaves};
+  return { leaves, loading, addLeave, updateLeave, deleteLeave };
 };
