@@ -15,7 +15,7 @@ router.delete(
 router.post(
   "/createLeave",
   authenticateJWT,
-  authorizeRoles("HR", "Admin"),
+  authorizeRoles("HR", "Admin",  "Employee"),
   LeaveController.createLeave
 );
 
@@ -29,7 +29,7 @@ router.get(
 
 //  Get user leaves
 router.get(
-  "/:userId",
+  "/:id",
   authenticateJWT,
   authorizeRoles("HR", "Admin", "Employee"),
   LeaveController.getUserLeaves

@@ -21,6 +21,22 @@ export const useLeaves = () => {
     }
     setLoading(false);
   };
+    // Fetch own leaves for employee
+  const fetchOwnLeaves = async (userId) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`${API_BASE_URL}/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setLeaves(res.data);
+    } catch (err) {
+      console.error("Fetch own leaves error:", err);
+      alert("Failed to fetch your leaves");
+    }
+    setLoading(false);
+  };
+  
 
   const addLeave = async (data) => {
     const token = localStorage.getItem("token");
@@ -50,5 +66,5 @@ export const useLeaves = () => {
     fetchLeaves();
   }, []);
 
-  return { leaves, loading, addLeave, updateLeave, deleteLeave };
+  return { leaves, loading, addLeave, updateLeave, deleteLeave, fetchOwnLeaves};
 };

@@ -10,11 +10,11 @@ const deleteLeave = async (LeaveID) => {
 const db = require("../config/db");
 
 // ✅ Create Leave Record
-const create = async ({ UserID, LeaveType, LeaveDays, MonthYear }) => {
+const create = async ({ UserID, LeaveType, LeaveDays, MonthYear, Status = "Pending" }) => {
   const [result] = await db.execute(
-    `INSERT INTO LeaveRecords (UserID, LeaveType, LeaveDays, MonthYear)
-     VALUES (?, ?, ?, ?)`,
-    [UserID, LeaveType, LeaveDays, MonthYear]
+    `INSERT INTO LeaveRecords (UserID, LeaveType, LeaveDays, MonthYear, Status)
+     VALUES (?, ?, ?, ?, ?)`,
+    [UserID, LeaveType, LeaveDays, MonthYear, Status]
   );
   return result.insertId;
 };

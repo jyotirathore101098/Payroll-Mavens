@@ -1,15 +1,46 @@
+/* Set explicit column widths for leaves table */
+.leaves-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.leaves-table th, .leaves-table td {
+  padding: 12px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  word-break: break-word;
+}
+
+.leaves-table th:nth-child(1), .leaves-table td:nth-child(1) { width: 120px; }
+.leaves-table th:nth-child(2), .leaves-table td:nth-child(2) { width: 140px; }
+.leaves-table th:nth-child(3), .leaves-table td:nth-child(3) { width: 80px; }
+.leaves-table th:nth-child(4), .leaves-table td:nth-child(4) { width: 120px; }
+.leaves-table th:nth-child(5), .leaves-table td:nth-child(5) { width: 120px; }
+.leaves-table th:nth-child(6), .leaves-table td:nth-child(6) { width: 180px; }
 /* LeavesPage.css */
 .leaves-container {
   max-width: 1000px;
+  width: 100%;
   margin: 40px auto;
   padding: 32px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-  width: 100%;
   box-sizing: border-box;
 }
 
+/* Fix table wrapper width and alignment */
+.leaves-table-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  max-height: 450px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
 .leaves-title {
   text-align: center;
   font-size: 2rem;

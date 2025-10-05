@@ -24,7 +24,13 @@ const createLeave = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const leaveId = await Leave.create({ UserID, LeaveType, LeaveDays, MonthYear });
+    // Set status to Approved if created by HR/Admin
+    let Status = "Pending";
+    if (req.user && (req.user.role === "HR" || req.user.role === "Admin")) {
+      Status = "Approved";
+    }
+
+    const leaveId = await Leave.create({ UserID, LeaveType, LeaveDays, MonthYear, Status });
     res.status(201).json({ message: "Leave record created", LeaveID: leaveId });
   } catch (err) {
     console.error("❌ Error creating leave:", err);
@@ -45,7 +51,7 @@ const getAllLeaves = async (req, res) => {
 //  Get Leaves by User
 const getUserLeaves = async (req, res) => {
   try {
-    const leaves = await Leave.getByUserId(req.params.userId);
+    const leaves = await Leave.getByUserId(req.params.id);
     res.json(leaves);
   } catch (err) {
     res.status(500).json({ message: "Server error" });

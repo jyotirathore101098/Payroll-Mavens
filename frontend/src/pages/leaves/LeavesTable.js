@@ -6,10 +6,6 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete }) => {
       'Casual': 'Casual Leave',
       'Sick': 'Sick Leave',
       'LOP': 'Loss of Pay',
-      'Maternity': 'Maternity Leave',
-      'Paternity': 'Paternity Leave',
-      'Annual': 'Annual Leave',
-      'Emergency': 'Emergency Leave'
     };
     return typeMap[type] || type;
   };
@@ -17,9 +13,17 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete }) => {
   const formatLeaveDays = (days) => {
     const numDays = parseFloat(days);
     if (numDays === 1) return '1 Day';
-    if (numDays === 0.5) return '½ Day';
     if (numDays % 1 === 0) return `${numDays} Days`;
     return `${numDays} Days`;
+  };
+
+  const formatStatus = (status) => {
+    const statusMap = {
+      'Pending': '🟡 Pending',
+      'Approved': '🟢 Approved',
+      'Rejected': '🔴 Rejected',
+    };
+    return statusMap[status] || status;
   };
 
   if (loading) {
@@ -39,16 +43,14 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete }) => {
             <th>Leave Type</th>
             <th>Days</th>
             <th>Month-Year</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {leaves.length === 0 ? (
             <tr>
-              <td 
-                colSpan={5} 
-                className="empty-state"
-              >
+              <td colSpan={7} className="empty-state">
                 No leave records found. Add your first leave record above.
               </td>
             </tr>
@@ -59,18 +61,23 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete }) => {
                 <td>{formatLeaveType(leave.LeaveType)}</td>
                 <td>{formatLeaveDays(leave.LeaveDays)}</td>
                 <td>{leave.MonthYear}</td>
+                <td>{formatStatus(leave.Status)}</td>
                 <td>
                   <div className="leaves-action-btns">
-                    <button 
-                      className="leaves-btn" 
+                    <button
+                      className="leaves-btn"
                       onClick={() => onEdit(leave)}
                     >
                       Edit
                     </button>
-                    <button 
-                      className="leaves-btn delete" 
+                    <button
+                      className="leaves-btn delete"
                       onClick={() => {
-                        if (window.confirm('Are you sure you want to delete this leave record?')) {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to delete this leave record?"
+                          )
+                        ) {
                           onDelete(leave.LeaveID || leave.id);
                         }
                       }}

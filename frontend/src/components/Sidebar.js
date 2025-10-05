@@ -36,12 +36,12 @@ const Sidebar = () => {
         </NavLink>
          )} 
 
-         {role !== "Employee" && (
+         
         <NavLink to="/leaves" className="sidebar-link">
           <FaCalendarAlt className="sidebar-icon" />
           <span>Leaves</span>
         </NavLink>
-         )} 
+         
 
          {role !== "Employee" && (
         <NavLink to="/salaryAdjustment" className="sidebar-link">
@@ -58,7 +58,7 @@ const Sidebar = () => {
           <FaFileInvoice className="sidebar-icon" />
           <span>Payslips</span>
         </NavLink>
-        
+
         {role !== "Employee" && (
         <NavLink to="/compliance" className="sidebar-link">
           <FaClipboardCheck className="sidebar-icon" />

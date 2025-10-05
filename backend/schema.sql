@@ -35,16 +35,17 @@ CREATE TABLE LeaveRecords (
     LeaveType VARCHAR(20) NOT NULL CHECK (LeaveType IN ('Casual', 'Sick', 'LOP')),
     LeaveDays INT NOT NULL CHECK (LeaveDays >= 0),
     MonthYear VARCHAR(10) NOT NULL, -- e.g., 'Sep-2025'
+    Status  ENUM('Pending', 'Approved', 'Rejected') NOT NULL DEFAULT 'Pending',
     CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CreatedBy INT DEFAULT NULL,
-	UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	UpdatedBy INT DEFAULT NULL,
+    UpdatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UpdatedBy INT DEFAULT NULL,
     CONSTRAINT fk_leave_user FOREIGN KEY (UserID) REFERENCES Users(UserID)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
-	CONSTRAINT fk_leave_createdby FOREIGN KEY (CreatedBy) REFERENCES Users(UserID)
+    CONSTRAINT fk_leave_createdby FOREIGN KEY (CreatedBy) REFERENCES Users(UserID)
         ON DELETE SET NULL ON UPDATE CASCADE,
-	CONSTRAINT fk_leave_updatedby FOREIGN KEY (UpdatedBy) REFERENCES Users(UserID)
+    CONSTRAINT fk_leave_updatedby FOREIGN KEY (UpdatedBy) REFERENCES Users(UserID)
         ON DELETE SET NULL ON UPDATE CASCADE
 );
 CREATE TABLE SalaryAdjustments (
