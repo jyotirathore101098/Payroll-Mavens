@@ -3,9 +3,9 @@ import React from "react";
 const LeavesTable = ({ leaves, loading, onEdit, onDelete }) => {
   const formatLeaveType = (type) => {
     const typeMap = {
-      'Casual': 'Casual Leave',
-      'Sick': 'Sick Leave',
-      'LOP': 'Loss of Pay',
+  'Casual': 'Casual Leave',
+  'Sick': 'Sick Leave',
+  'LOP': 'Loss of Pay',
     };
     return typeMap[type] || type;
   };
