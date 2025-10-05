@@ -5,11 +5,7 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete }) => {
     const typeMap = {
       'Casual': 'Casual Leave',
       'Sick': 'Sick Leave',
-      'LOP': 'Loss of Pay',
-      'Maternity': 'Maternity Leave',
-      'Paternity': 'Paternity Leave',
-      'Annual': 'Annual Leave',
-      'Emergency': 'Emergency Leave'
+      'LOP': 'Loss of Pay'
     };
     return typeMap[type] || type;
   };
