@@ -62,13 +62,13 @@ const getUserLeaves = async (req, res) => {
 const updateLeave = async (req, res) => {
   try {
     const { LeaveID } = req.params;
-    const { LeaveType, LeaveDays, MonthYear } = req.body;
+    const { LeaveType, LeaveDays, MonthYear, Status } = req.body;
 
-    if (!LeaveType || !LeaveDays || !MonthYear) {
+    if (!LeaveType || !LeaveDays || !MonthYear || !Status) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const updated = await Leave.update(LeaveID, { LeaveType, LeaveDays, MonthYear });
+    const updated = await Leave.update(LeaveID, { LeaveType, LeaveDays, MonthYear, Status });
     if (updated) {
       res.json({ message: "Leave record updated" });
     } else {

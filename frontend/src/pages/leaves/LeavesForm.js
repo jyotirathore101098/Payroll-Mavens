@@ -9,6 +9,7 @@ const LeavesForm = ({ form, setForm, editId, onAdd, onUpdate, onCancel }) => {
     setForm({ UserID: "", LeaveType: "", LeaveDays: "", MonthYear: "" });
   };
 
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <form className="leaves-form" onSubmit={handleSubmit}>
       <input 
@@ -53,18 +54,20 @@ const LeavesForm = ({ form, setForm, editId, onAdd, onUpdate, onCancel }) => {
         title="Format: MMM-YYYY (e.g., Oct-2025)"
         required 
       />
-      <select
-        className="leaves-input"
-        name="Status"
-        value={form.Status || "Pending"}
-        onChange={handleChange}
-        required
-      >
-        <option value="">Pending</option>
-        <option value="Pending">Status</option>
-        <option value="Approved">Approved</option>
-        <option value="Rejected">Rejected</option>
-      </select>
+      {user && user.role !== "Employee" && (
+        <select
+          className="leaves-input"
+          name="Status"
+          value={form.Status || "Pending"}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Pending</option>
+          <option value="Pending">Status</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      )}
       <div className="form-buttons">
         <button className="leaves-btn" type="submit">
           {editId ? "Update Leave" : "Add Leave"}

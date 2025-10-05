@@ -39,13 +39,13 @@ const getByUserId = async (UserID) => {
   return rows;
 };
 
-// ✅ Update leave (HR/Admin can correct LeaveDays or LeaveType)
-const update = async (LeaveID, { LeaveType, LeaveDays, MonthYear }) => {
+// ✅ Update leave (HR/Admin can correct LeaveDays, LeaveType, Status)
+const update = async (LeaveID, { LeaveType, LeaveDays, MonthYear, Status }) => {
   const [result] = await db.execute(
     `UPDATE LeaveRecords 
-     SET LeaveType = ?, LeaveDays = ?, MonthYear = ?
+     SET LeaveType = ?, LeaveDays = ?, MonthYear = ?, Status = ?
      WHERE LeaveID = ?`,
-    [LeaveType, LeaveDays, MonthYear, LeaveID]
+    [LeaveType, LeaveDays, MonthYear, Status, LeaveID]
   );
   return result.affectedRows;
 };

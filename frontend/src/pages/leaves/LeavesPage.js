@@ -5,8 +5,8 @@ import LeavesTable from "./LeavesTable";
 import "./LeavesPage.css";
 
 const LeavesPage = () => {
-  const { leaves, loading, addLeave, updateLeave, deleteLeave ,fetchOwnLeaves} = useLeaves();
-  const [form, setForm] = useState({ UserID: "", LeaveType: "", LeaveDays: "", MonthYear: "" });
+  const { leaves, loading, addLeave, updateLeave, deleteLeave, fetchOwnLeaves } = useLeaves();
+  const [form, setForm] = useState({ UserID: "", LeaveType: "", LeaveDays: "", MonthYear: "", Status: "Pending" });
   const [editId, setEditId] = useState(null);
 
   const handleEdit = (leave) => {
@@ -16,12 +16,13 @@ const LeavesPage = () => {
       LeaveType: leave.LeaveType,
       LeaveDays: leave.LeaveDays,
       MonthYear: leave.MonthYear,
+      Status: leave.Status || "Pending"
     });
   };
 
   const handleCancel = () => {
     setEditId(null);
-    setForm({ UserID: "", LeaveType: "", LeaveDays: "", MonthYear: "" });
+    setForm({ UserID: "", LeaveType: "", LeaveDays: "", MonthYear: "", Status: "Pending" });
   };
 
   return (
