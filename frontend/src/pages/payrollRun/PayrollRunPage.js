@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { fetchRuns, insertRun, deleteRun, fetchPreview } from "./payrollRunService";
+import { fetchRuns, insertRun, deleteRun, fetchPreview, fetchRunsByUser } from "./payrollRunService";
 import PayrollRunForm from "./PayrollRunForm";
+import PayrollRunSearchForm from "./PayrollRunSearchForm";
 import PayrollRunPreview from "./PayrollRunPreview";
 import PayrollRunTable from "./PayrollRunTable";
 import "./PayrollRunPage.css";
@@ -11,6 +12,28 @@ const PayrollRunPage = () => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+
+  // Search by UserID handler
+  const handleSearch = async (userID) => {
+    setSearchLoading(true);
+    try {
+      if (!userID) {
+        const allRuns = await fetchRuns();
+        setRuns(allRuns);
+      } else {
+        const trimmedUserID = userID.trim();
+        const runsByUser = await fetchRunsByUser(trimmedUserID);
+        setRuns(runsByUser);
+        if (!runsByUser || runsByUser.length === 0) {
+          alert("No payroll runs found for this User ID.");
+        }
+      }
+    } catch {
+      alert("Failed to search payroll runs");
+    }
+    setSearchLoading(false);
+  };
 
   useEffect(() => {
     loadRuns();
@@ -81,6 +104,7 @@ const PayrollRunPage = () => {
     <div className="payrollrun-container">
       <h2 className="payrollrun-title">Payroll Run Records</h2>
       <PayrollRunForm form={form} loading={loading} previewLoading={previewLoading} onChange={handleChange} onSubmit={handleSubmit} onPreview={handlePreview} />
+      <PayrollRunSearchForm onSearch={handleSearch} loading={searchLoading} />
       <PayrollRunPreview preview={preview} />
       <PayrollRunTable runs={runs} onDelete={handleDelete} />
     </div>

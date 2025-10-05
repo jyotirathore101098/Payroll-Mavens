@@ -7,6 +7,13 @@ const API_BASE_ADJUSTMENTS = "http://localhost:3000/api/adjustments";
 
 const getToken = () => localStorage.getItem("token");
 
+export const fetchRunsByUser = async (userId) => {
+  const res = await axios.get(`${API_BASE_URL}/${userId}`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+  return res.data;
+};
+
 export const fetchRuns = async () => {
   const res = await axios.get(API_BASE_URL, {
     headers: { Authorization: `Bearer ${getToken()}` },

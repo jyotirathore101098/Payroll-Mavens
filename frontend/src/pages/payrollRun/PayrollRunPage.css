@@ -1,3 +1,43 @@
+/* Search Form Styles */
+.payrollrun-search-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f1f5f9;
+  padding: 16px 24px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+  max-width: 400px;
+  margin-left: 150px;
+}
+
+.payrollrun-search-form .payrollrun-input {
+  flex: 1;
+  margin-left: 0;
+  min-width: 0;
+}
+
+.payrollrun-btn.search {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.payrollrun-btn.search:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.payrollrun-btn.search:hover:not(:disabled) {
+  background: #1e40af;
+}
 /* PayrollRunPage.css */
 .payrollrun-container {
   max-width: 1200px;

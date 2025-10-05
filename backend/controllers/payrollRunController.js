@@ -106,6 +106,15 @@ console.log(pfRate,esiRate,tdsRate);
     if (bonus) saladjustment += `+${bonus}`;
     if (deduction) saladjustment += (saladjustment ? ' ' : '') + `-${deduction}`;
 
+    // Generate payslip after payroll run
+    try {
+      const payslipController = require("./payslipController");
+      await payslipController.generate({ body: { payrollRunId } }, { status: () => ({ json: () => {} }) });
+      console.log(`[runPayroll] Payslip generated for PayrollRunID:`, payrollRunId);
+    } catch (err) {
+      console.error(`[runPayroll] Payslip generation failed:`, err);
+    }
+
     res.status(201).json({
       message: "Payroll run completed",
       PayrollRunID: payrollRunId,

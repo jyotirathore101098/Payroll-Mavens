@@ -8,7 +8,7 @@ const getAll = async () => {
     `SELECT p.PayslipID, r.UserID, r.MonthYear, r.NetSalary, p.FilePath
      FROM Payslips p
      JOIN PayrollRuns r ON p.PayrollRunID = r.PayrollRunID
-     ORDER BY p.GeneratedAt DESC`
+     ORDER BY p.GeneratedAt ASC`
   );
   return rows;
 };
@@ -32,7 +32,7 @@ const getByUser = async (userId) => {
      FROM Payslips p
      JOIN PayrollRuns r ON p.PayrollRunID = r.PayrollRunID
      WHERE r.UserID = ?
-     ORDER BY p.GeneratedAt DESC`,
+     ORDER BY p.GeneratedAt ASC`,
     [userId]
   );
   return rows;

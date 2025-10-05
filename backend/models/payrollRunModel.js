@@ -16,7 +16,7 @@ const createPayrollRun = async (data) => {
 // Fetch all payroll runs
 const getAllPayrollRuns = async () => {
   const [rows] = await db.execute(
-    `SELECT * FROM PayrollRuns ORDER BY CreatedAt DESC`
+    `SELECT * FROM PayrollRuns ORDER BY CreatedAt ASC`
   );
   return rows;
 };
@@ -24,7 +24,7 @@ const getAllPayrollRuns = async () => {
 // Fetch payroll runs for a specific user
 const getPayrollRunsByUser = async (userId) => {
   const [rows] = await db.execute(
-    `SELECT * FROM PayrollRuns WHERE UserID = ? ORDER BY CreatedAt DESC`,
+    `SELECT * FROM PayrollRuns WHERE UserID = ? ORDER BY CreatedAt ASC`,
     [userId]
   );
   return rows;

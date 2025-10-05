@@ -54,6 +54,11 @@ const Sidebar = () => {
           <span>Payroll Run</span>
         </NavLink>
         
+         <NavLink to="/payslips" className="sidebar-link">
+          <FaFileInvoice className="sidebar-icon" />
+          <span>Payslips</span>
+        </NavLink>
+        
         {role !== "Employee" && (
         <NavLink to="/compliance" className="sidebar-link">
           <FaClipboardCheck className="sidebar-icon" />
@@ -68,10 +73,7 @@ const Sidebar = () => {
         </NavLink>
         )} 
         
-        <NavLink to="/payslips" className="sidebar-link">
-          <FaFileInvoice className="sidebar-icon" />
-          <span>Payslips</span>
-        </NavLink>
+       
       </nav>
     </aside>
   );
