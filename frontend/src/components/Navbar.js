@@ -5,6 +5,10 @@ import { FaCloud } from 'react-icons/fa';
 
 const Navbar = () => {
   const navigate = useNavigate();
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const username = user?.name || user?.username || '';
+    const role = user?.role || '';
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -18,6 +22,12 @@ const Navbar = () => {
       </div>
       <div className="navbar-center">Payroll Management</div>
       <div className="navbar-right">
+          {username && (
+  <span className="navbar-welcome">
+    Welcome, {username}{role && ` (${role} Login) `}
+  </span>
+)}
+          
         <button className="navbar-logout" onClick={handleLogout}>Logout</button>
       </div>
     </nav>

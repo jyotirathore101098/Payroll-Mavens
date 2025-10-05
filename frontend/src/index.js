@@ -17,7 +17,7 @@ import Reports from './pages/reports/ReportsPage';
 function AppLayout() {
   const location = useLocation();
   const hideLayout = location.pathname === "/";
-
+  
   if (hideLayout) {
     return <Routes><Route path="/" element={<AuthPage />} /></Routes>;
   }
@@ -27,6 +27,7 @@ function AppLayout() {
       <Navbar />
       <div className='app-body'>
         <Sidebar />
+        
         <div  className='main-content-wrapper'>
           <Routes>
             <Route path="/payroll" element={<Payroll />} />
