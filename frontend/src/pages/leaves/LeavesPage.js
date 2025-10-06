@@ -25,11 +25,21 @@ const LeavesPage = () => {
     setForm({ UserID: "", LeaveType: "", LeaveDays: "", MonthYear: "", Status: "Pending" });
   };
 
+  // Get user role from localStorage (case-insensitive check)
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isEmployee = user?.role?.toLowerCase() === "employee";
+
   return (
     <div className="leaves-container">
       <h2 className="leaves-title">Leave Records</h2>
       <LeavesForm form={form} setForm={setForm} editId={editId} onAdd={addLeave} onUpdate={updateLeave} onCancel={handleCancel} />
-  <LeavesTable leaves={leaves} loading={loading} onEdit={handleEdit} onDelete={deleteLeave} />
+      <LeavesTable
+        leaves={leaves}
+        loading={loading}
+        onEdit={handleEdit}
+        onDelete={deleteLeave}
+        isEmployee={isEmployee}
+      />
     </div>
   );
 };
