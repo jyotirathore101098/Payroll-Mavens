@@ -21,6 +21,15 @@ const LeavesForm = ({ form, setForm, editId, onAdd, onUpdate, onCancel }) => {
         type="text"
         required 
       />
+      <input
+        className="leaves-input"
+        name="UserName"
+        value={form.UserName || ""}
+        onChange={handleChange}
+        placeholder="User Name"
+        type="text"
+        required
+      />
       <select 
         className="leaves-input" 
         name="LeaveType" 

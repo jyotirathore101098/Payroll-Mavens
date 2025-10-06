@@ -139,6 +139,9 @@
 
 /* Table Styles */
 .leaves-table-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
   max-height: 450px;
   overflow-y: auto;
   border: 1px solid #e5e7eb;
@@ -157,7 +160,7 @@
   padding: 12px 16px;
   border-bottom: 1px solid #e5e7eb;
   text-align: left;
-  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .leaves-table th {
@@ -177,36 +180,42 @@
   border-bottom: none;
 }
 
-/* Column width distribution */
+/* Column width distribution for 7 columns (User ID, Name, Leave Type, Days, Month-Year, Status, Actions) */
 .leaves-table th:nth-child(1),
 .leaves-table td:nth-child(1) {
-  width: 15%;
-  min-width: 100px;
+  width: 12%;
+  min-width: 80px;
 }
-
 .leaves-table th:nth-child(2),
 .leaves-table td:nth-child(2) {
-  width: 20%;
+  width: 18%;
   min-width: 120px;
 }
-
 .leaves-table th:nth-child(3),
 .leaves-table td:nth-child(3) {
-  width: 15%;
-  min-width: 100px;
-  text-align: center;
+  width: 14%;
+  min-width: 90px;
 }
-
 .leaves-table th:nth-child(4),
 .leaves-table td:nth-child(4) {
-  width: 20%;
-  min-width: 120px;
+  width: 10%;
+  min-width: 70px;
+  text-align: center;
 }
-
 .leaves-table th:nth-child(5),
 .leaves-table td:nth-child(5) {
-  width: 30%;
-  min-width: 160px;
+  width: 16%;
+  min-width: 100px;
+}
+.leaves-table th:nth-child(6),
+.leaves-table td:nth-child(6) {
+  width: 15%;
+  min-width: 90px;
+}
+.leaves-table th:nth-child(7),
+.leaves-table td:nth-child(7) {
+  width: 15%;
+  min-width: 90px;
 }
 
 /* Action buttons in table */

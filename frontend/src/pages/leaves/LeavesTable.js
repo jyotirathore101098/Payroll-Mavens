@@ -40,6 +40,7 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete, isEmployee }) => {
         <thead>
           <tr>
             <th>User ID</th>
+            <th>Name</th>
             <th>Leave Type</th>
             <th>Days</th>
             <th>Month-Year</th>
@@ -50,7 +51,7 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete, isEmployee }) => {
         <tbody>
           {leaves.length === 0 ? (
             <tr>
-              <td colSpan={isEmployee ? 6 : 7} className="empty-state">
+              <td colSpan={isEmployee ? 7 : 8} className="empty-state">
                 No leave records found. Add your first leave record above.
               </td>
             </tr>
@@ -58,6 +59,7 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete, isEmployee }) => {
             leaves.map((leave) => (
               <tr key={leave.LeaveID || leave.id}>
                 <td>{leave.UserID}</td>
+                <td>{leave.UserName || "-"}</td>
                 <td>{formatLeaveType(leave.LeaveType)}</td>
                 <td>{formatLeaveDays(leave.LeaveDays)}</td>
                 <td>{leave.MonthYear}</td>
