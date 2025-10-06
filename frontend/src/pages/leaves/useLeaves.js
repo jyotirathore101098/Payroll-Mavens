@@ -35,7 +35,15 @@ export const useLeaves = () => {
 
   const addLeave = async (data) => {
     const token = localStorage.getItem("token");
-    await axios.post(`${API_BASE_URL}/createLeave`, data, {
+    // Only send relevant fields
+    const payload = {
+      UserID: data.UserID,
+      LeaveType: data.LeaveType,
+      FromDate: data.FromDate,
+      ToDate: data.ToDate,
+      Status: data.Status,
+    };
+    await axios.post(`${API_BASE_URL}/createLeave`, payload, {
       headers: { Authorization: `Bearer ${token}` },
     });
     fetchLeaves();
@@ -43,7 +51,13 @@ export const useLeaves = () => {
 
   const updateLeave = async (id, data) => {
     const token = localStorage.getItem("token");
-    await axios.put(`${API_BASE_URL}/${id}`, data, {
+    const payload = {
+      LeaveType: data.LeaveType,
+      FromDate: data.FromDate,
+      ToDate: data.ToDate,
+      Status: data.Status,
+    };
+    await axios.put(`${API_BASE_URL}/${id}`, payload, {
       headers: { Authorization: `Bearer ${token}` },
     });
     fetchLeaves();

@@ -180,7 +180,7 @@
   border-bottom: none;
 }
 
-/* Column width distribution for 7 columns (User ID, Name, Leave Type, Days, Month-Year, Status, Actions) */
+/* Column width distribution for 7 columns (User ID, Name, Leave Type, Days, From Date, To Date, Status, Actions) */
 .leaves-table th:nth-child(1),
 .leaves-table td:nth-child(1) {
   width: 12%;
@@ -204,17 +204,22 @@
 }
 .leaves-table th:nth-child(5),
 .leaves-table td:nth-child(5) {
-  width: 16%;
-  min-width: 100px;
+  width: 14%;
+  min-width: 90px;
 }
 .leaves-table th:nth-child(6),
 .leaves-table td:nth-child(6) {
-  width: 15%;
+  width: 14%;
   min-width: 90px;
 }
 .leaves-table th:nth-child(7),
 .leaves-table td:nth-child(7) {
-  width: 15%;
+  width: 14%;
+  min-width: 90px;
+}
+.leaves-table th:nth-child(8),
+.leaves-table td:nth-child(8) {
+  width: 14%;
   min-width: 90px;
 }
 

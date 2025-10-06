@@ -6,7 +6,7 @@ import "./LeavesPage.css";
 
 const LeavesPage = () => {
   const { leaves, loading, addLeave, updateLeave, deleteLeave } = useLeaves();
-  const [form, setForm] = useState({ UserID: "", LeaveType: "", LeaveDays: "", MonthYear: "", Status: "Pending" });
+  const [form, setForm] = useState({ UserID: "", LeaveType: "", FromDate: "", ToDate: "", Status: "Pending" });
   const [editId, setEditId] = useState(null);
 
   const handleEdit = (leave) => {
@@ -14,15 +14,15 @@ const LeavesPage = () => {
     setForm({
       UserID: leave.UserID,
       LeaveType: leave.LeaveType,
-      LeaveDays: leave.LeaveDays,
-      MonthYear: leave.MonthYear,
-      Status: leave.Status || "Pending"
+      FromDate: leave.FromDate,
+      ToDate: leave.ToDate,
+      Status: leave.Status ? leave.Status : "Pending"
     });
   };
 
   const handleCancel = () => {
     setEditId(null);
-    setForm({ UserID: "", LeaveType: "", LeaveDays: "", MonthYear: "", Status: "Pending" });
+    setForm({ UserID: "", LeaveType: "", FromDate: "", ToDate: "", Status: "Pending" });
   };
 
   // Get user role from localStorage (case-insensitive check)

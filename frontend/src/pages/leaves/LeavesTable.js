@@ -1,5 +1,16 @@
 import React from "react";
 
+// Format date as DD-MM-YYYY
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr;
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
 const LeavesTable = ({ leaves, loading, onEdit, onDelete, isEmployee }) => {
   const formatLeaveType = (type) => {
     const typeMap = {
@@ -43,7 +54,8 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete, isEmployee }) => {
             <th>Name</th>
             <th>Leave Type</th>
             <th>Days</th>
-            <th>Month-Year</th>
+            <th>From Date</th>
+            <th>To Date</th>
             <th>Status</th>
             {!isEmployee && <th>Actions</th>}
           </tr>
@@ -62,7 +74,8 @@ const LeavesTable = ({ leaves, loading, onEdit, onDelete, isEmployee }) => {
                 <td>{leave.UserName || "-"}</td>
                 <td>{formatLeaveType(leave.LeaveType)}</td>
                 <td>{formatLeaveDays(leave.LeaveDays)}</td>
-                <td>{leave.MonthYear}</td>
+                <td>{leave.FromDate ? formatDate(leave.FromDate) : ""}</td>
+                <td>{leave.ToDate ? formatDate(leave.ToDate) : ""}</td>
                 <td>{formatStatus(leave.Status)}</td>
                 {!isEmployee && (
                   <td>

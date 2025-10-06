@@ -7,16 +7,16 @@ import "./AuthPage.css";
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "Employee",
+  name: "",
+  email: "",
+  password: "",
+  role: "Admin",
   });
 
   const navigate = useNavigate();
 
   const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,12 +28,15 @@ const AuthPage = () => {
         alert(`Login successful. Welcome ${data.user?.name || "User"}`);
         navigate("/payroll");
       } else {
-        await register(formData);
+        // Ensure role is set
+        const regData = { ...formData, role: formData.role || "Admin" };
+        await register(regData);
         alert("Registration successful. You can now login.");
         setIsLogin(true);
       }
     } catch (err) {
       let errorMsg =
+        err.response?.data?.error ||
         err.response?.data?.message ||
         JSON.stringify(err.response?.data) ||
         err.message ||

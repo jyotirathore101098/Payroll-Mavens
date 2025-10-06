@@ -33,8 +33,9 @@ CREATE TABLE LeaveRecords (
     LeaveID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
     LeaveType VARCHAR(20) NOT NULL CHECK (LeaveType IN ('Casual', 'Sick', 'LOP')),
-    LeaveDays INT NOT NULL CHECK (LeaveDays >= 0),
-    MonthYear VARCHAR(10) NOT NULL, -- e.g., 'Sep-2025'
+    FromDate DATE NOT NULL,
+    ToDate DATE NOT NULL,
+    LeaveDays INT NOT NULL CHECK (LeaveDays >= 0), -- calculated in backend
     Status  ENUM('Pending', 'Approved', 'Rejected') NOT NULL DEFAULT 'Pending',
     CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CreatedBy INT DEFAULT NULL,

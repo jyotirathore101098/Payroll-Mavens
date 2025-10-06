@@ -6,17 +6,28 @@ const pool = require("../config/db");
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const [result] = await pool.query(
-      "INSERT INTO Users (Name, Email, PasswordHash, Role, CreatedAt) VALUES (?, ?, ?, ?, NOW())",
-      [name, email, hashedPassword, role]
-    );
-
-    res.status(201).json({ message: "User registered", userId: result.insertId });
+    try {
+      const [result] = await pool.query(
+        "INSERT INTO Users (Name, Email, PasswordHash, Role, CreatedAt) VALUES (?, ?, ?, ?, NOW())",
+        [name, email, hashedPassword, role]
+      );
+      res.status(201).json({ message: "User registered", userId: result.insertId });
+    } catch (dbErr) {
+      // Duplicate email error (MySQL error code 1062)
+      if (dbErr.code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({ error: "Email already registered" });
+      }
+      console.error("DB error during registration:", dbErr);
+      return res.status(500).json({ error: dbErr.message || "Database error" });
+    }
   } catch (err) {
     console.error("Register error:", err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: err.message || "Server error" });
   }
 };
 

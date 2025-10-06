@@ -18,11 +18,19 @@ const Leave = require("../models/leaveModel");
 // Create Leave Record
 const createLeave = async (req, res) => {
   try {
-    const { UserID, LeaveType, LeaveDays, MonthYear } = req.body;
+    const { UserID, LeaveType, FromDate, ToDate } = req.body;
 
-    if (!UserID || !LeaveType || !LeaveDays || !MonthYear) {
+    if (!UserID || !LeaveType || !FromDate || !ToDate) {
       return res.status(400).json({ message: "Missing required fields" });
     }
+
+    // Calculate LeaveDays (inclusive)
+    const from = new Date(FromDate);
+    const to = new Date(ToDate);
+    if (isNaN(from) || isNaN(to) || from > to) {
+      return res.status(400).json({ message: "Invalid date range" });
+    }
+    const LeaveDays = Math.floor((to - from) / (1000 * 60 * 60 * 24)) + 1;
 
     // Set status to Approved if created by HR/Admin
     let Status = "Pending";
@@ -30,7 +38,7 @@ const createLeave = async (req, res) => {
       Status = "Approved";
     }
 
-    const leaveId = await Leave.create({ UserID, LeaveType, LeaveDays, MonthYear, Status });
+    const leaveId = await Leave.create({ UserID, LeaveType, FromDate, ToDate, LeaveDays, Status });
     res.status(201).json({ message: "Leave record created", LeaveID: leaveId });
   } catch (err) {
     console.error("❌ Error creating leave:", err);
@@ -73,13 +81,21 @@ const getOwnLeaves = async (req, res) => {
 const updateLeave = async (req, res) => {
   try {
     const { LeaveID } = req.params;
-    const { LeaveType, LeaveDays, MonthYear, Status } = req.body;
+    const { LeaveType, FromDate, ToDate, Status } = req.body;
 
-    if (!LeaveType || !LeaveDays || !MonthYear || !Status) {
+    if (!LeaveType || !FromDate || !ToDate || !Status) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const updated = await Leave.update(LeaveID, { LeaveType, LeaveDays, MonthYear, Status });
+    // Calculate LeaveDays (inclusive)
+    const from = new Date(FromDate);
+    const to = new Date(ToDate);
+    if (isNaN(from) || isNaN(to) || from > to) {
+      return res.status(400).json({ message: "Invalid date range" });
+    }
+    const LeaveDays = Math.floor((to - from) / (1000 * 60 * 60 * 24)) + 1;
+
+    const updated = await Leave.update(LeaveID, { LeaveType, FromDate, ToDate, LeaveDays, Status });
     if (updated) {
       res.json({ message: "Leave record updated" });
     } else {

@@ -135,7 +135,11 @@ console.log(pfRate,esiRate,tdsRate);
     });
   } catch (err) {
     console.error("Error running payroll:", err);
-    res.status(500).json({ error: "Server error" });
+    if (err && err.stack) {
+      console.error("Stack trace:", err.stack);
+    }
+    console.error("Request body:", req.body);
+    res.status(500).json({ error: "Server error", details: err.message });
   }
 };
 
