@@ -82,28 +82,47 @@ const download = async (req, res) => {
     if (!fs.existsSync(filePath)) {
       // Fallback: generate a valid payslip PDF with payroll run data
       const db = require("../config/db");
+      
+      // First, get payroll run data
       const [fallbackRows] = await db.query(
-        `SELECT * FROM PayrollRuns WHERE UserID = ? AND MonthYear = ? LIMIT 1`,
+        `SELECT pr.*, u.Name, u.Email, u.Role 
+         FROM PayrollRuns pr 
+         LEFT JOIN Users u ON pr.UserID = u.UserID 
+         WHERE pr.UserID = ? AND pr.MonthYear = ? 
+         LIMIT 1`,
         [payslip.UserID, payslip.MonthYear]
       );
-      const fallbackPayroll = fallbackRows[0] || {
-        UserID: payslip.UserID,
-        MonthYear: payslip.MonthYear,
-        GrossSalary: 0,
-        PF: 0,
-        ESI: 0,
-        TDS: 0,
-        NetSalary: 0,
-        Name: '',
-        Email: '',
-        Role: '',
-        Bonus: 0,
-        Deduction: 0,
-        LOPDays: 0,
-        LOPDeduction: 0,
-        TotalLeaves: 0,
-        LeaveTypes: []
-      };
+      
+      let fallbackPayroll;
+      if (fallbackRows.length > 0) {
+        fallbackPayroll = fallbackRows[0];
+      } else {
+        // If no payroll run found, get user data directly
+        const [userRows] = await db.query(
+          `SELECT UserID, Name, Email, Role FROM Users WHERE UserID = ? LIMIT 1`,
+          [payslip.UserID]
+        );
+        
+        const userData = userRows[0] || {};
+        fallbackPayroll = {
+          UserID: payslip.UserID,
+          MonthYear: payslip.MonthYear,
+          GrossSalary: 0,
+          PF: 0,
+          ESI: 0,
+          TDS: 0,
+          NetSalary: payslip.NetSalary || 0,
+          Name: userData.Name || 'Unknown Employee',
+          Email: userData.Email || 'No Email Available',
+          Role: userData.Role || 'Employee',
+          Bonus: 0,
+          Deduction: 0,
+          LOPDays: 0,
+          LOPDeduction: 0,
+          TotalLeaves: 0,
+          LeaveTypes: []
+        };
+      }
   // Generate PDF using payroll data
   let fallbackBuffers = [];
   const fallbackDoc = new PDFDocument();
@@ -128,9 +147,9 @@ const download = async (req, res) => {
       fallbackDoc.moveDown();
       // Employee Info (always show all fields)
       fallbackDoc.fontSize(12).text(`Employee ID: ${fallbackPayroll.UserID}`);
-      fallbackDoc.text(`Employee Name: ${fallbackPayroll.Name || ''}`);
-      fallbackDoc.text(`Email: ${fallbackPayroll.Email || ''}`);
-      fallbackDoc.text(`Role: ${fallbackPayroll.Role || ''}`);
+      fallbackDoc.text(`Employee Name: ${fallbackPayroll.Name || 'Unknown Employee'}`);
+      fallbackDoc.text(`Email: ${fallbackPayroll.Email || 'No Email Available'}`);
+      fallbackDoc.text(`Role: ${fallbackPayroll.Role || 'Employee'}`);
       fallbackDoc.text(`Month-Year: ${fallbackPayroll.MonthYear}`);
       fallbackDoc.moveDown();
       // Earnings Section

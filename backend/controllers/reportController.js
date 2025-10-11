@@ -1,5 +1,51 @@
-function listReports(req, res) {
+// Utility functions for common operations
+const formatDate = (dateStr) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = String(date.getFullYear()).slice(-2);
+  return `${day}/${month}/${year}`;
+};
 
+const generateMonthYear = (dateStr) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+  return `${month}-${year}`;
+};
+
+const escapeCsvValue = (value) => {
+  return `"${String(value || "").replace(/"/g, '""')}"`;
+};
+
+const formatCurrency = (amount) => {
+  return Number(amount || 0).toFixed(2);
+};
+
+const generateCsvResponse = (csvRows, filename, res) => {
+  const csv = csvRows.join("\n");
+  res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+  res.setHeader("Content-Type", "text/csv");
+  res.send(csv);
+};
+
+const generateExcelResponse = (data, worksheetName, filename, columnWidths, res) => {
+  const XLSX = require('xlsx');
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  worksheet['!cols'] = columnWidths;
+  XLSX.utils.book_append_sheet(workbook, worksheet, worksheetName);
+  const excelBuffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.send(excelBuffer);
+};
+
+function listReports(req, res) {
   res.json([
     {
       id: "compliance",
@@ -34,7 +80,7 @@ function listReports(req, res) {
   ]);
 }
 
-// Placeholder endpoints for new report types
+
 async function getPayrollSummary(req, res) {
   res.json({ message: "Payroll summary report endpoint not yet implemented." });
 }
@@ -59,50 +105,31 @@ async function getPayslipReport(req, res) {
   }
 }
 
-/**
- * GET /api/reports/leaves/csv?month=Sep-2025
- * Returns CSV download of leave info for the month
- */
 async function exportLeaveCsv(req, res) {
   try {
-    const month = req.query.month;
+    const { month } = req.query;
     const LeaveModel = require('../models/leaveModel');
-    let rows;
-    let filename;
-    if (month) {
-      rows = await LeaveModel.getByMonth(month);
-      filename = `leave_${month}.csv`;
-    } else {
-      rows = await LeaveModel.getAll();
-      filename = `leave_all.csv`;
-    }
+    
+    const rows = month ? await LeaveModel.getByMonth(month) : await LeaveModel.getAll();
+    const filename = month ? `leave_${month}.csv` : 'leave_all.csv';
 
-    // Build CSV header
-    const header = [
-      "LeaveID",
-      "UserID",
-      "LeaveType",
-      "LeaveDays",
-      "MonthYear"
-    ];
+    const header = ["LeaveID", "UserID", "UserName", "LeaveType", "FromDate", "ToDate", "LeaveDays", "MonthYear", "Status", "CreatedAt"];
     const csvRows = [header.join(",")];
 
-    for (const r of rows) {
-      const line = [
-        r.LeaveID,
-        r.UserID,
-        r.LeaveType,
-        r.LeaveDays,
-        r.MonthYear
-      ].join(",");
-      csvRows.push(line);
-    }
+    csvRows.push(...rows.map(r => [
+      r.LeaveID,
+      r.UserID,
+      escapeCsvValue(r.UserName || r.Name),
+      r.LeaveType,
+      formatDate(r.FromDate),
+      formatDate(r.ToDate),
+      r.LeaveDays,
+      generateMonthYear(r.FromDate),
+      r.Status,
+      formatDate(r.CreatedAt)
+    ].join(",")));
 
-    const csv = csvRows.join("\n");
-
-    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
-    res.setHeader("Content-Type", "text/csv");
-    res.send(csv);
+    generateCsvResponse(csvRows, filename, res);
   } catch (err) {
     console.error("Leave CSV export error:", err);
     res.status(500).json({ message: "Server error" });
@@ -129,8 +156,119 @@ async function getLeaveReport(req, res) {
   }
 }
 
+async function exportLeaveExcel(req, res) {
+  try {
+    const { month } = req.query;
+    const LeaveModel = require('../models/leaveModel');
+    
+    const rows = month ? await LeaveModel.getByMonth(month) : await LeaveModel.getAll();
+    const filename = month ? `leaves_${month}.xlsx` : 'leaves_all.xlsx';
+
+    const excelData = rows.map(r => ({
+      'Leave ID': r.LeaveID,
+      'User ID': r.UserID,
+      'User Name': r.UserName || r.Name || '',
+      'Leave Type': r.LeaveType || '',
+      'From Date': formatDate(r.FromDate),
+      'To Date': formatDate(r.ToDate),
+      'Leave Days': Number(r.LeaveDays || 0),
+      'Month Year': generateMonthYear(r.FromDate),
+      'Status': r.Status || '',
+      'Created At': formatDate(r.CreatedAt)
+    }));
+
+    const columnWidths = [
+      { wch: 10 }, { wch: 10 }, { wch: 20 }, { wch: 15 }, { wch: 12 },
+      { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 10 }, { wch: 15 }
+    ];
+
+    generateExcelResponse(excelData, 'Leaves', filename, columnWidths, res);
+  } catch (err) {
+    console.error("Leave Excel export error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
 async function getSalaryAdjustmentReport(req, res) {
-  res.json({ message: "Salary adjustment report endpoint not yet implemented." });
+  try {
+    const SalaryAdjustmentModel = require('../models/salaryAdjustmentModel');
+    const adjustments = await SalaryAdjustmentModel.getAll();
+    
+    // Format the data to match frontend expectations
+    const formattedAdjustments = adjustments.map(adjustment => ({
+      AdjustmentID: adjustment.AdjustmentID,
+      UserID: adjustment.UserID,
+      Amount: adjustment.Amount,
+      Reason: adjustment.AdjustmentType, 
+      MonthYear: adjustment.MonthYear,
+      CreatedAt: adjustment.CreatedAt,
+      Name: adjustment.Name 
+    }));
+    
+    res.json(formattedAdjustments);
+  } catch (err) {
+    console.error("Salary adjustment report error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+}
+
+async function exportSalaryAdjustmentCsv(req, res) {
+  try {
+    const { month } = req.query;
+    const SalaryAdjustmentModel = require('../models/salaryAdjustmentModel');
+    
+    const allRows = await SalaryAdjustmentModel.getAll();
+    const rows = month ? allRows.filter(row => row.MonthYear === month) : allRows;
+    const filename = month ? `salary_adjustments_${month}.csv` : 'salary_adjustments_all.csv';
+
+    const header = ["AdjustmentID", "UserID", "Name", "AdjustmentType", "Amount", "MonthYear", "CreatedAt"];
+    const csvRows = [header.join(",")];
+
+    csvRows.push(...rows.map(r => [
+      r.AdjustmentID,
+      r.UserID,
+      escapeCsvValue(r.Name),
+      escapeCsvValue(r.AdjustmentType),
+      formatCurrency(r.Amount),
+      r.MonthYear,
+      formatDate(r.CreatedAt)
+    ].join(",")));
+
+    generateCsvResponse(csvRows, filename, res);
+  } catch (err) {
+    console.error("Salary adjustment CSV export error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+async function exportSalaryAdjustmentExcel(req, res) {
+  try {
+    const { month } = req.query;
+    const SalaryAdjustmentModel = require('../models/salaryAdjustmentModel');
+    
+    const allRows = await SalaryAdjustmentModel.getAll();
+    const rows = month ? allRows.filter(row => row.MonthYear === month) : allRows;
+    const filename = month ? `salary_adjustments_${month}.xlsx` : 'salary_adjustments_all.xlsx';
+
+    const excelData = rows.map(r => ({
+      'Adjustment ID': r.AdjustmentID,
+      'User ID': r.UserID,
+      'Name': r.Name || '',
+      'Adjustment Type': r.AdjustmentType || '',
+      'Amount': Number(r.Amount || 0),
+      'Month Year': r.MonthYear,
+      'Created At': formatDate(r.CreatedAt)
+    }));
+
+    const columnWidths = [
+      { wch: 12 }, { wch: 10 }, { wch: 20 }, { wch: 15 }, { wch: 12 }, { wch: 12 }, { wch: 20 }
+    ];
+
+    generateExcelResponse(excelData, 'Salary Adjustments', filename, columnWidths, res);
+  } catch (err) {
+    console.error("Salary adjustment Excel export error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 }
 
 const ReportModel = require("../models/reportModel");
@@ -154,49 +292,29 @@ async function getComplianceReport(req, res) {
   }
 }
 
-
   // Returns CSV download (per-user breakdown)
  
 async function exportComplianceCsv(req, res) {
   try {
-    const month = req.query.month;
+    const { month } = req.query;
     if (!month) return res.status(400).json({ message: "Query param 'month' required (e.g., Sep-2025)" });
 
     const rows = await ReportModel.getComplianceByUser(month);
-
-    // Build CSV header
-    const header = [
-      "PayrollRunID",
-      "UserID",
-      "Name",
-      "GrossSalary",
-      "PF",
-      "ESI",
-      "TDS",
-      "NetSalary",
-    ];
+    const header = ["PayrollRunID", "UserID", "Name", "GrossSalary", "PF", "ESI", "TDS", "NetSalary"];
     const csvRows = [header.join(",")];
 
-    // Build CSV lines 
-    for (const r of rows) {
-      const line = [
-        r.PayrollRunID,
-        r.UserID,
-        `"${String(r.Name || "").replace(/"/g, '""')}"`,
-        Number(r.GrossSalary || 0).toFixed(2),
-        Number(r.PF || 0).toFixed(2),
-        Number(r.ESI || 0).toFixed(2),
-        Number(r.TDS || 0).toFixed(2),
-        Number(r.NetSalary || 0).toFixed(2),
-      ].join(",");
-      csvRows.push(line);
-    }
+    csvRows.push(...rows.map(r => [
+      r.PayrollRunID,
+      r.UserID,
+      escapeCsvValue(r.Name),
+      formatCurrency(r.GrossSalary),
+      formatCurrency(r.PF),
+      formatCurrency(r.ESI),
+      formatCurrency(r.TDS),
+      formatCurrency(r.NetSalary)
+    ].join(",")));
 
-    const csv = csvRows.join("\n");
-
-    res.setHeader("Content-Disposition", `attachment; filename="compliance_${month}.csv"`);
-    res.setHeader("Content-Type", "text/csv");
-    res.send(csv);
+    generateCsvResponse(csvRows, `compliance_${month}.csv`, res);
   } catch (err) {
     console.error("Compliance CSV export error:", err);
     res.status(500).json({ message: "Server error" });
@@ -211,5 +329,8 @@ module.exports = {
   getPayslipReport,
   getLeaveReport,
   exportLeaveCsv,
+  exportLeaveExcel,
   getSalaryAdjustmentReport,
+  exportSalaryAdjustmentCsv,
+  exportSalaryAdjustmentExcel,
 };

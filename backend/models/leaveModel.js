@@ -73,4 +73,27 @@ const getByUserIdAndMonth = async (UserID, MonthYear) => {
   return rows;
 };
 
-module.exports = { create, getAll, getByUserId, update, deleteLeave, getByUserIdAndMonth };
+// Get leave records by MonthYear for all users
+const getByMonth = async (MonthYear) => {
+  // MonthYear format: 'Oct-2025' (MMM-YYYY)
+  // Extract month and year
+  const [monthStr, yearStr] = MonthYear.split('-');
+  const month = new Date(Date.parse(monthStr + " 1, 2020")).getMonth() + 1; // 1-indexed
+  const year = parseInt(yearStr);
+  
+  // Find leaves where FromDate or ToDate falls within the month/year
+  const [rows] = await db.execute(
+    `SELECT lr.*, u.Name AS UserName
+     FROM LeaveRecords lr
+     JOIN Users u ON lr.UserID = u.UserID
+     WHERE (
+       (MONTH(lr.FromDate) = ? AND YEAR(lr.FromDate) = ?)
+       OR (MONTH(lr.ToDate) = ? AND YEAR(lr.ToDate) = ?)
+     )
+     ORDER BY lr.CreatedAt DESC`,
+    [month, year, month, year]
+  );
+  return rows;
+};
+
+module.exports = { create, getAll, getByUserId, update, deleteLeave, getByUserIdAndMonth, getByMonth };

@@ -7,7 +7,10 @@ const { authenticateJWT, authorizeRoles } = require("../middleware/auth");
 router.get("/payroll", authenticateJWT, authorizeRoles("Admin","HR"), reportController.getPayrollSummary);
 router.get("/payslips", authenticateJWT, authorizeRoles("Admin","HR"), reportController.getPayslipReport);
 router.get("/leaves", authenticateJWT, authorizeRoles("Admin","HR"), reportController.getLeaveReport);
+router.get("/leaves/excel", authenticateJWT, authorizeRoles("Admin","HR"), reportController.exportLeaveExcel);
 router.get("/adjustments", authenticateJWT, authorizeRoles("Admin","HR"), reportController.getSalaryAdjustmentReport);
+router.get("/adjustments/csv", authenticateJWT, authorizeRoles("Admin","HR"), reportController.exportSalaryAdjustmentCsv);
+router.get("/adjustments/excel", authenticateJWT, authorizeRoles("Admin","HR"), reportController.exportSalaryAdjustmentExcel);
 
 // List available reports (for frontend)
 router.get("/", authenticateJWT, authorizeRoles("Admin","HR"), reportController.listReports);
